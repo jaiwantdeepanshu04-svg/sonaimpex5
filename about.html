@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Sona Impex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Three.js Library for Professional 3D Graphics -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        /* --- BRAND THEME VARIABLES --- */
+        :root {
+            --navy: #0A2342;
+            --gold: #D4A017;
+            --white: #FFFFFF;
+            --dark-blue: #06162b;
+            --light-bg: #F8FAFC;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --card-shadow: 0 10px 30px rgba(10, 35, 66, 0.04);
+        }
+
+        /* --- GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- STICKY HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 35, 66, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            color: var(--gold);
+        }
+
+        .tagline {
+            color: #94A3B8;
+            font-size: 11px;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--gold);
+        }
+
+        /* Hamburger Menu Icon */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* --- ABOUT HERO INNER BANNER WITH 3D INTERACTIVE CANVAS --- */
+        .about-hero {
+            background: linear-gradient(rgba(6, 22, 43, 0.85), rgba(10, 35, 66, 0.9));
+            padding: 140px 5% 100px 5%;
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Injecting 3D Canvas element behind content */
+        #three-canvas-about {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            min-height: 300px; /* Mobile rendering fix */
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .about-hero p {
+            color: var(--gold);
+            font-size: 16px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* --- COMPANY OVERVIEW CONTAINER --- */
+        .section-padding {
+            padding: 90px 5%;
+        }
+
+        .overview-wrapper {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .overview-text h2 {
+            font-size: 32px;
+            color: var(--navy);
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .overview-text p {
+            color: var(--text-light);
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .highlight-badge {
+            background: rgba(214, 160, 23, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 15px 20px;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 25px;
+        }
+
+        .overview-image {
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .overview-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transition: transform 0.4s ease;
+        }
+
+        /* --- MISSION & VISION (Glassmorphic Columns) --- */
+        .mv-section {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--dark-blue) 100%);
+            color: var(--white);
+        }
+
+        .mv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mv-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 45px 35px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .mv-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(214, 160, 23, 0.4);
+        }
+
+        .mv-card i {
+            font-size: 38px;
+            color: var(--gold);
+            margin-bottom: 25px;
+        }
+
+        .mv-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .mv-card p {
+            color: #CBD5E1;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* --- CORE VALUES (Row of 3D Cards) --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            color: var(--navy);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background-color: var(--gold);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .value-card {
+            background: var(--white);
+            padding: 35px 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease;
+        }
+
+        .value-card:hover {
+            transform: translateY(-8px) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(10, 35, 66, 0.1);
+            border-color: rgba(214, 160, 23, 0.2);
+        }
+
+        .value-card i {
+            font-size: 34px;
+            color: var(--navy);
+            margin-bottom: 20px;
+            transform: translateZ(20px);
+        }
+
+        .value-card h3 {
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 12px;
+            font-weight: 600;
+            transform: translateZ(15px);
+        }
+
+        .value-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.6;
+            transform: translateZ(10px);
+        }
+
+        /* --- MANUFACTURING & QUALITY COMMITMENT --- */
+        .mfg-section {
+            background-color: #F1F5F9;
+        }
+
+        .mfg-wrapper {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 60px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .mfg-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+        }
+
+        .mfg-text h2 {
+            font-size: 32px;
+            color: var(--navy);
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .mfg-text p {
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .certifications-badges {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cert-badge {
+            background: var(--white);
+            border: 1px solid rgba(10, 35, 66, 0.1);
+            padding: 12px 20px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--navy);
+            font-size: 14px;
+        }
+
+        .cert-badge i {
+            color: var(--gold);
+            font-size: 18px;
+        }
+
+        /* --- HISTORICAL TIMELINE SECTION --- */
+        .timeline-container {
+            position: relative;
+            max-width: 900px;
+            margin: 40px auto 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: rgba(10, 35, 66, 0.1);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+        }
+
+        .timeline-block {
+            position: relative;
+            width: 50%;
+            padding: 20px 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .timeline-block.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-left {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-right {
+            left: 50%;
+            text-align: left;
+        }
+
+        .timeline-pointer {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: var(--white);
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            top: 28px;
+            z-index: 1;
+            transition: background-color 0.3s ease;
+        }
+
+        .timeline-right .timeline-pointer {
+            left: -8px;
+        }
+
+        .timeline-block.visible .timeline-pointer {
+            background-color: var(--navy);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .timeline-year {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .timeline-content h4 {
+            font-size: 16px;
+            color: var(--navy);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .timeline-content p {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+
+        /* --- STATISTICS INFOGRAPHICS --- */
+        .stats-infographic {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--navy) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-box h3 {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .stat-box p {
+            color: #94A3B8;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--dark-blue);
+            color: #94A3B8;
+            padding: 70px 5% 30px 5%;
+            font-size: 14px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background-color: var(--gold);
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .footer-contact i {
+            color: var(--gold);
+            margin-top: 3px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--gold);
+            color: var(--navy);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; position: relative; }
+            .mobile-nav-toggle { display: block; }
+            
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 35, 66, 0.98);
+                padding: 20px;
+                border-bottom: 2px solid var(--gold);
+            }
+            
+            nav.active { display: block; }
+            nav ul { flex-direction: column; gap: 20px; text-align: center; }
+            .about-hero h1 { font-size: 32px; }
+            .overview-wrapper, .mfg-wrapper { grid-template-columns: 1fr; gap: 30px; }
+            .timeline-container::after { left: 20px; }
+            .timeline-block { width: 100%; left: 0; text-align: left; padding-left: 45px; padding-right: 10px; }
+            .timeline-pointer { left: 12px !important; }
+            .section-padding { padding: 60px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+ <header style="display: flex; align-items: center; justify-content: space-between;">
+    <div class="logo-area" style="display: flex; flex-direction: column;">
+        <div class="logo-text" style="display: flex; align-items: center; gap: 10px;">
+            <!-- Logo Image -->
+            <img src="https://cdn.phototourl.com/free/2026-07-11-60f419d5-4370-47bc-a34a-a815fa53dee5.png" alt="Sona Impex Logo" style="height: 45px; width: auto; object-fit: contain;">
+            
+            <div style="display: flex; flex-direction: column;">
+                <!-- Heading with 24px -->
+                <span style="color: #ffffff; font-weight: bold; font-size: 1.5rem;">Sona <span style="color: var(--gold);">Impex</span></span>
+                
+                <!-- Updated Tagline Section: Font size 11px and not bold -->
+                <div class="brand-tagline" style="color: #ffffff; font-size: 0.85rem; font-style: italic; font-weight: normal; margin-top: 1px; letter-spacing: 0.5px;">
+                    Filtering Purity, Delivering Quality
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="mobile-nav-toggle"><i class="fa-solid fa-bars"></i></button>
+    
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About Us</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="industries.html">Industries Served</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+</header>
+    <!-- 3D HERO CONTAINER INJECTED HERE -->
+    <section class="about-hero">
+        <div id="three-canvas-about"></div>
+        <div class="about-hero-content">
+            <h1>About Sona Impex</h1>
+            <p>A Legacy of Quality Filtration & Manufacturing Excellence</p>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="overview-wrapper">
+            <div class="overview-text">
+                <h2>Delivering Reliable Industrial Filtration Solutions</h2>
+                <p>Established with a commitment to quality and reliability, Sona Impex has grown into a trusted manufacturer and supplier of industrial filtration products. With decades of experience, we provide high-performance filter bags, filter cloth, filter cartridges, and customized filtration solutions designed for demanding industrial applications.</p>
+                <p>Our products are widely used in pharmaceutical, chemical, food processing, cement, petrochemical, steel, and other manufacturing industries where process efficiency, product purity, and operational reliability are critical.</p>
+                <p>By combining manufacturing expertise, stringent quality control, and customer-focused service, we strive to deliver filtration solutions that consistently meet industry requirements and build long-term business relationships worldwide.</p>
+                <div class="highlight-badge">
+                    <i class="fa-solid fa-award"></i> 30+ Years of Industry Experience Delivering dependable filtration products, customized solutions, and responsive customer support to industries across India and international markets. - India and international markets to Domestic and International markets.
+                </div>
+            </div>
+            <div class="overview-image">
+                <img src="https://cdn.phototourl.com/free/2026-07-11-4cc07a01-787e-4816-a035-d7bb7f8b30d0.jpg" alt="Sona Impex Manufacturing Facility">
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding mv-section">
+        <div class="mv-grid">
+            <div class="mv-card">
+                <i class="fa-solid fa-bullseye"></i>
+                <h3>Our Mission</h3>
+                <p>To provide high-quality industrial filtration solutions that enhance process efficiency, product purity, and operational reliability while building lasting relationships with our customers.</p>
+            </div>
+            <div class="mv-card">
+                <i class="fa-solid fa-eye"></i>
+                <h3>Our Vision</h3>
+                <p>To be recognized as a trusted global partner in industrial filtration by continuously delivering quality products, technical expertise, and customer-focused service.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="section-title">
+            <h2>Our Core Values</h2>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <i class="fa-solid fa-circle-check"></i>
+                <h3>Uncompromised Quality</h3>
+                <p>Every filtration product is manufactured using carefully selected raw materials and undergoes strict quality inspections to ensure durability, micron accuracy, chemical compatibility and consistent filtration performance across demanding industrial applications.</p>
+            </div>
+            <div class="value-card">
+                <i class="fa-solid fa-lightbulb"></i>
+                <h3>Continuous Innovation</h3>
+                <p>We continuously improve our filtration technologies by developing customized filter media, optimized designs and application-specific solutions that meet evolving industrial process requirements.</p>
+            </div>
+            <div class="value-card">
+                <i class="fa-solid fa-handshake"></i>
+                <h3>Absolute Reliability</h3>
+                <p>Customers across global industries rely on Sona Impex for dependable products, consistent manufacturing standards, timely deliveries and long-term filtration performance.</p>
+            </div>
+            <div class="value-card">
+                <i class="fa-solid fa-users-gear"></i>
+                <h3>Customer Focus</h3>
+                <p>Every filtration solution is designed around the customer's operating conditions, ensuring the right product selection, technical guidance and responsive after-sales support.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding mfg-section">
+        <div class="mfg-wrapper">
+            <div class="mfg-image">
+                <img src="https://cdn.phototourl.com/free/2026-07-11-e294462b-cacd-4761-992e-4390cc1fd03b.webp" alt="Advanced Cleanroom Production Line">
+            </div>
+            <div class="mfg-text">
+                <h2>Advanced Manufacturing Infrastructure</h2>
+                <p>Our manufacturing operations combine advanced production equipment, experienced technicians and stringent quality control systems to deliver reliable industrial filtration solutions. Every product is engineered to meet demanding operating environments while maintaining consistent performance and long service life.</p>
+                <p>From raw material inspection to final dispatch, each stage follows a structured quality process ensuring dimensional accuracy, filtration efficiency and dependable product consistency for customers worldwide.</p>
+                <div class="certifications-badges">
+                    <div class="cert-badge"><i class="fa-solid fa-circle-nodes"></i> ISO 9001:2010 Certified</div>
+                    <div class="cert-badge"><i class="fa-solid fa-vial-circle-check"></i> Cleanroom Tested</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding">
+        <div class="section-title">
+            <h2>Our Journey</h2>
+        </div>
+        <div class="timeline-container">
+            <div class="timeline-block timeline-left">
+                <div class="timeline-pointer"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">1996</div>
+                    <h4>Company Established</h4>
+                    <p>Sona Impex was established with the vision of delivering high-performance industrial filtration products backed by engineering excellence, quality manufacturing and customer-focused solutions.</p>
+                </div>
+            </div>
+            <div class="timeline-block timeline-right">
+                <div class="timeline-pointer"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2015</div>
+                    <h4>Expansion into Global Markets</h4>
+                    <p>Scaled core product capabilities to serve international compliance pipelines, launching regular container trade routes across Europe and the Middle East.</p>
+                </div>
+            </div>
+            <div class="timeline-block timeline-left">
+                <div class="timeline-pointer"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2020</div>
+                    <h4>Advanced Automation Integration</h4>
+                    <p>Strengthened manufacturing infrastructure, expanded the product portfolio and enhanced quality control systems to serve diverse industrial filtration applications.</p>
+                </div>
+            </div>
+            <div class="timeline-block timeline-right">
+                <div class="timeline-pointer"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">2026</div>
+                    <h4>Trusted Global Filtration Partner</h4>
+                    <p>Today Sona Impex proudly supplies premium industrial filtration products to customers across 50+ countries while continuing to innovate and deliver reliable engineered filtration solutions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding stats-infographic" id="stats-section">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <h3 class="stat-number" data-value="30">0</h3>
+                <p>Years of Experience</p>
+            </div>
+            <div class="stat-box">
+                <h3 class="stat-number" data-value="25">0</h3>
+                <p>Countries Served</p>
+            </div>
+            <div class="stat-box">
+                <h3 class="stat-number" data-value="50">0</h3>
+                <p>Industrial Clients</p>
+            </div>
+            <div class="stat-box">
+                <h3 class="stat-number" data-value="100000">0</h3>
+                <p> Products Delivered</p>
+            </div>
+        </div>
+    </section>
+
+   <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-text" style="font-size: 22px; display: flex; align-items: center; gap: 10px;">
+                    <img src="https://cdn.phototourl.com/free/2026-07-11-60f419d5-4370-47bc-a34a-a815fa53dee5.png" alt="Sona Impex Logo Icon" style="height: 35px; width: auto; object-fit: contain;">
+                    <span style="color: #ffffff;">Sona <span style="color: var(--gold);">Impex</span></span>
+                </div>
+                <p style="margin-top: 15px; line-height: 1.6;">Sona Impex is a trusted manufacturer and supplier of premium industrial filtration products including Filter Bags, Filter Cloth, Filter Cartridges and customized filtration solutions for pharmaceutical, chemical, food processing and manufacturing industries. We are committed to delivering quality, reliability and long-term performance.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="industries.html">Industries Served</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Information</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>A-1/102, Kavi Nagar Industrial Area, Ghaziabad, Uttar Pradesh, India, 201002</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>sonaimpex1265@gmail.com
+                         <br>info@sonaimpex.com</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+91-9810603211, +91-9711095518</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; Designed by jaiwantdeepanshu04@gmail.com 2026 Sona Impex. All Rights Reserved. 
+        </div>
+    </footer>
+
+    <script>
+        // --- MOBILE NAV TOGGLE ENGINE ---
+        const mobileBtn = document.querySelector('.mobile-nav-toggle');
+        const navMenu = document.querySelector('nav');
+        
+        mobileBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = mobileBtn.querySelector('i');
+            if(navMenu.classList.contains('active')) {
+                icon.className = "fa-solid fa-xmark";
+            } else {
+                icon.className = "fa-solid fa-bars";
+            }
+        });
+
+        // --- THREE.JS INTERACTIVE BACKGROUND ENGINE ---
+        const container = document.getElementById('three-canvas-about');
+        
+        // Safety initialization values for mobile rendering
+        let width = container.clientWidth || window.innerWidth;
+        let height = container.clientHeight || 300;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+        camera.position.z = 50;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Making the Molecular Plexus/Mesh Structure
+        const count = window.innerWidth < 768 ? 45 : 90; // Reducing load on mobile processors
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+
+        for(let i=0; i<count*3; i++) {
+            positions[i] = (Math.random() - 0.5) * 100;
+        }
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: window.innerWidth < 768 ? 1.2 : 0.8,
+            color: 0xD4A017, // Brand Gold Color
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const plexusPoints = new THREE.Points(geometry, material);
+        scene.add(plexusPoints);
+
+        // Interactive Wireframe Object Loop
+        const outerWireGeometry = new THREE.IcosahedronGeometry(window.innerWidth < 768 ? 18 : 25, 1);
+        const outerWireMaterial = new THREE.MeshBasicMaterial({
+            color: 0xD4A017,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.06
+        });
+        const wireframeSphere = new THREE.Mesh(outerWireGeometry, outerWireMaterial);
+        scene.add(wireframeSphere);
+
+        // Mouse Interactivity Event with Mobile Safety Check
+        let mouseX = 0, mouseY = 0;
+        if(window.innerWidth > 768) {
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX - window.innerWidth / 2) * 0.025;
+                mouseY = (e.clientY - window.innerHeight / 2) * 0.025;
+            });
+        }
+
+        const clock = new THREE.Clock();
+
+        function animate3DScene() {
+            requestAnimationFrame(animate3DScene);
+            const time = clock.getElapsedTime();
+
+            plexusPoints.rotation.y = time * 0.04;
+            wireframeSphere.rotation.y = time * 0.02;
+            wireframeSphere.rotation.x = time * 0.01;
+
+            if(window.innerWidth > 768) {
+                camera.position.x += (mouseX - camera.position.x) * 0.05;
+                camera.position.y += (-mouseY - camera.position.y) * 0.05;
+            }
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+        animate3DScene();
+
+        window.addEventListener('resize', () => {
+            const w = container.clientWidth || window.innerWidth;
+            const h = container.clientHeight || 300;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        });
+
+        // --- 3D INTERACTIVE CARD EFFECT ---
+        if(window.innerWidth > 768) { // Disabling tilt effect on touch screens
+            const cards = document.querySelectorAll('.value-card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - (rect.width/2);
+                    const y = e.clientY - rect.top - (rect.height/2);
+                    card.style.transform = `translateY(-8px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = `translateY(0) rotateX(0) rotateY(0)`;
+                });
+            });
+        }
+
+        // --- SCROLL ANIMATION FOR TIMELINE BLOCKS ---
+        const blocks = document.querySelectorAll('.timeline-block');
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        blocks.forEach(block => timelineObserver.observe(block));
+
+        // --- INFOGRAPHIC STATISTICS ANIMATION ---
+        const statNumbers = document.querySelectorAll('.stat-number');
+        let statsAnimated = false;
+        
+        const animateStats = () => {
+            statNumbers.forEach(stat => {
+                const target = +stat.getAttribute('data-value');
+                let count = 0;
+                const increment = Math.ceil(target / 50); 
+                
+                const updateNumber = () => {
+                    count += increment;
+                    if(count < target) {
+                        if(target === 100) {
+                            stat.innerText = count + "%";
+                        } else {
+                            stat.innerText = count.toLocaleString() + "+";
+                        }
+                        setTimeout(updateNumber, 25);
+                    } else {
+                        if(target === 100) {
+                            stat.innerText = "100%";
+                        } else {
+                            stat.innerText = target.toLocaleString() + "+";
+                        }
+                    }
+                };
+                updateNumber();
+            });
+        };
+
+        // Scroll triggers statistics count animation safely
+        const statsSection = document.getElementById('stats-section');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting && !statsAnimated) {
+                    animateStats();
+                    statsAnimated = true;
+                }
+            });
+        }, { threshold: 0.4 });
+
+        if(statsSection) {
+            statsObserver.observe(statsSection);
+        }
+    </script>
+    <!-- Floating Request a Quote Button -->
+<a href="contact.html" class="floating-quote-btn" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; background: var(--gold, #D4A017); color:#0A2342; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 10px;">
+    <i class="fa-solid fa-file-invoice"></i> Request a Quote
+</a>
+</body>
+</html>

@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Catalog | Sona Impex</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- BRAND THEME VARIABLES --- */
+        :root {
+            --navy: #0A2342;
+            --gold: #D4A017;
+            --white: #FFFFFF;
+            --dark-blue: #06162b;
+            --light-bg: #F8FAFC;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+            --glass-bg: rgba(255, 255, 255, 0.07);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --card-shadow: 0 10px 30px rgba(10, 35, 66, 0.05);
+            --card-shadow-hover: 0 20px 40px rgba(10, 35, 66, 0.15);
+        }
+
+        /* --- GLOBAL STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- STICKY HEADER --- */
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 35, 66, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            color: var(--gold);
+        }
+
+        .tagline {
+            color: #94A3B8;
+            font-size: 11px;
+            font-style: italic;
+            margin-top: 2px;
+        }
+
+        /* Mobile Hamburger Button CSS */
+        .mobile-nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav-toggle:hover {
+            color: var(--gold);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--gold);
+        }
+
+        /* --- PRODUCTS HERO BANNER --- */
+        .products-hero {
+            background: linear-gradient(135deg, var(--dark-blue) 0%, var(--navy) 100%);
+            padding: 80px 5% 60px 5%;
+            color: var(--white);
+            text-align: center;
+            position: relative;
+        }
+
+        .products-hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .products-hero p {
+            font-size: 18px;
+            color: #CBD5E1;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* --- PRODUCTS CATALOG GRID --- */
+        .catalog-section {
+            padding: 60px 5%;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* FIXED PRODUCT CARD INTERACTION: Hata diya shake behavior aur scale lagaya */
+        .product-card {
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02); /* Clean, flat soft lift & zoom without wobble */
+            box-shadow: var(--card-shadow-hover);
+            border-color: rgba(214, 160, 23, 0.3);
+        }
+
+        .product-img-wrapper {
+            width: 100%;
+            height: 240px;
+            background-color: #E2E8F0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.06);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 20px;
+            border: 1px solid var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-title {
+            font-size: 22px;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .specs-container {
+            margin-bottom: 20px;
+            background: #F8FAFC;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold);
+        }
+
+        .specs-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .specs-list {
+            list-style: none;
+        }
+
+        .specs-list li {
+            font-size: 13.5px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .specs-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .specs-list i {
+            font-size: 12px;
+        }
+
+        .features-list i { color: #10B981; }
+        .benefits-list i { color: #3B82F6; }
+
+        .btn-enquire {
+            width: 100%;
+            background: var(--navy);
+            color: var(--white);
+            border: 2px solid var(--navy);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            margin-top: auto;
+            transition: all 0.3s ease;
+        }
+
+        .btn-enquire:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: var(--navy);
+            box-shadow: 0 8px 16px rgba(214, 160, 23, 0.2);
+        }
+
+        /* --- REQUEST A QUOTE SECTION --- */
+        .quote-section {
+            background: linear-gradient(rgba(10, 35, 66, 0.92), rgba(6, 22, 43, 0.96)), url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200') no-repeat center center/cover;
+            background-attachment: fixed;
+            padding: 80px 5%;
+        }
+
+        .quote-card {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            padding: 45px;
+            border-radius: 16px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            color: var(--white);
+        }
+
+        .quote-card h2 {
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .quote-card p {
+            text-align: center;
+            color: #94A3B8;
+            margin-bottom: 35px;
+            font-size: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group-full {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #CBD5E1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: var(--white);
+            font-size: 15px;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(214, 160, 23, 0.2);
+        }
+
+        .form-group select option {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn-submit {
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--dark-blue);
+            color: #94A3B8;
+            padding: 70px 5% 30px 5%;
+            font-size: 14px;
+            border-top: 3px solid var(--gold);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto 50px auto;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 2px;
+            background-color: var(--gold);
+            bottom: -8px;
+            left: 0;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a {
+            color: #94A3B8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--gold);
+            padding-left: 5px;
+        }
+
+        .footer-contact li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .footer-contact i {
+            color: var(--gold);
+            margin-top: 3px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            width: 38px;
+            height: 38px;
+            background: rgba(255,255,255,0.05);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background: var(--gold);
+            color: var(--navy);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+
+        /* Floating Request Quote Button style */
+        .floating-quote-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--gold);
+            color: var(--navy);
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 10px 25px rgba(212, 160, 23, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            transition: all 0.3s ease;
+        }
+
+        .floating-quote-btn:hover {
+            background-color: var(--navy);
+            color: var(--white);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(10, 35, 66, 0.4);
+        }
+
+        /* --- PERFECT RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header { 
+                padding: 15px 5%; 
+            }
+            
+            .mobile-nav-toggle {
+                display: block; /* Hamburger viewable on mobile */
+            }
+
+            nav {
+                display: none; /* Hide standard menu */
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 35, 66, 0.98);
+                box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+                border-bottom: 2px solid var(--gold);
+            }
+
+            nav.active {
+                display: block; /* Show menu when toggle active */
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+                padding: 10px 0;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .products-hero h1 { 
+                font-size: 30px; 
+            }
+            
+            .products-hero p { 
+                font-size: 15px; 
+            }
+
+            .quote-card { 
+                padding: 25px 20px; 
+            }
+
+            .quote-card h2 {
+                font-size: 24px;
+            }
+            
+            .quote-section {
+                background-attachment: scroll; /* Fixes performance lag on dynamic mobile screens */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="logo-area" style="display: flex; flex-direction: column;">
+            <div class="logo-text" style="display: flex; align-items: center; gap: 10px;">
+                <img src="https://cdn.phototourl.com/free/2026-07-11-60f419d5-4370-47bc-a34a-a815fa53dee5.png" alt="Sona Impex Logo" style="height: 45px; width: auto; object-fit: contain;">
+                
+                <div style="display: flex; flex-direction: column;">
+                    <span style="color: #ffffff; font-weight: bold; font-size: 1.5rem; line-height: 1.5;">Sona <span style="color: var(--gold);">Impex</span></span>
+                    
+                    <div class="brand-tagline" style="color: #ffffff; font-size: 0.85rem; font-style: italic; font-weight: normal; margin-top: -8px; letter-spacing: 0.5px;">
+                        Filtering Purity, Delivering Quality
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="mobile-nav-toggle"><i class="fa-solid fa-bars"></i></button>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="industries.html">Industries Served</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="products-hero" style="position: relative; overflow: hidden;">
+        <div id="three-canvas-global" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></div>
+        
+        <div style="position: relative; z-index: 2;">
+            <h1>Industrial Filtration Products Engineered for Maximum Performance</h1>
+            <p>Discover premium filtration solutions manufactured to deliver exceptional efficiency, durability and precision across chemical, pharmaceutical, food processing, cement, steel and industrial applications.</p>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <div class="products-grid">
+            
+            <div class="product-card" data-product="Filter Cloth & Media">
+                <div class="product-img-wrapper">
+                    <span class="product-badge">Best Seller</span>
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-3d8ed926-062e-4bdf-b41c-4fa8206aaf6a.jpg" alt="Filter Cloth & Media" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Filter Cloth & Media</h3>
+                    <p class="product-desc">High-performance woven and non-woven filtration fabrics designed for liquid and air filtration systems,ensuring efficient separation and reliable filtration performance.</p>     
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Available in PP, Polyester, Nylon & specialty fabrics</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Precision micron filtration options</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Chemical and abrasion resistant</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Improves filtration efficiency</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Reduces downtime and maintenance frequency</li> 
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Lowers overall operating cost</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Filter Cloth & Media')">Enquire Now</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-product="Dust Collector Bags">
+                <div class="product-img-wrapper">
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-f05693d2-3bc2-43cd-8810-a68f6b799383.jpg" alt="Dust Collector Bags" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Dust Collector Bags</h3>
+                    <p class="product-desc">Advanced filtration bags designed for industrial dust collection systems. Engineered to capture fine particulate matter while maintaining optimum airflow and ensuring reliable environmental compliance.</p>
+                    
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Needle-felt and woven bag options</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Anti-static and PTFE membrane finishes available</li>
+                            <li><i class="fa-solid fa-circle-check"></i> High-temperature resistant media</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> High dust capture efficiency</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Longer bag service life</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Reduces plant maintenance costs</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Dust Collector Bags')">Enquire Now</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-product="Centrifuge Filter Bags">
+                <div class="product-img-wrapper">
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-efb3d8f3-2492-4f62-9cbf-9fd662122ed5.jpg" alt="Centrifuge Filter Bags" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Centrifuge Filter Bags</h3>
+                    <p class="product-desc">Precision-engineered filter bags for centrifuge systems used in chemical, pharmaceutical, food, and mineral processing industries. Built to withstand high rotational forces while ensuring accurate solid-liquid separation.</p>
+                    
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Exact-fit design for basket centrifuges</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Reinforced double-stitched seams</li>
+                            <li><i class="fa-solid fa-circle-check"></i> High mechanical strength fabric</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Prevents product bypass and leakage</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Ensures cleaner separation results</li>
+                             <li><i class="fa-solid fa-circle-arrow-right"></i> Reduces bag replacement frequency</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Centrifuge Filter Bags')">Enquire Now</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-product="Fluid Bed Dryer Bags (FBD)">
+                <div class="product-img-wrapper">
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-340d631b-20ce-4b0d-aa4b-4538e9f1ac95.jpg" alt="Fluid Bed Dryer Bags (FBD)" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Fluid Bed Dryer Bags (FBD)</h3>
+                    <p class="product-desc">Fluid Bed Dryer (FBD) Bags are precision-engineered filtration bags manufactured for pharmaceutical fluid bed drying systems. Designed using premium-grade anti-static and FDA-compliant fabrics, these bags ensure efficient product drying, maximum powder retention, and contamination-free processing while meeting stringent GMP standards.</p>
+                    
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> Premium antistatic filter fabric</li>
+                            <li><i class="fa-solid fa-circle-check"></i> High-temperature & abrasion resistant</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Custom sizes for all FBD models</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Uniform drying performance</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Longer service life</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> GMP compliant filtration</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-product="Sparkler Filter Pads">
+                <div class="product-img-wrapper">
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-cd24989d-8b5b-437e-9362-f5dc6bfe4f5d.jpg" alt="Sparkler Filter Pads" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Sparkler Filter Pads</h3>
+                    <p class="product-desc">Sparkler Filter Pads are high-performance filtration media designed for horizontal plate sparkler filters used in pharmaceutical, chemical, food & beverage, edible oil, and cosmetic industries. Engineered for superior clarification, these pads deliver high dirt-holding capacity and exceptional filtration efficiency.</p>
+                    
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> High dirt holding capacity</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Food & pharma grade media</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Available in multiple micron ratings</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Crystal-clear filtration</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Improved product quality</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Extended filtration cycles</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Sparkler Filter Pads')">Enquire Now</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-product="Filter Cartridges">
+                <div class="product-img-wrapper">
+                    <img src="https://cdn.phototourl.com/member/2026-07-12-60eb9155-b4df-4a43-a2ce-1a8934505c04.jpg" alt="Filter Cartridges" class="product-img">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Filter Cartridges</h3>
+                    <p class="product-desc">Filter Cartridges are high-efficiency pleated filtration elements designed for liquid and process filtration applications. Manufactured using advanced polypropylene, PES, PTFE, nylon, and glass fiber media, they provide reliable particle removal while maintaining high flow rates and low pressure drop across various industrial processes.</p>
+                    
+                    <div class="specs-container">
+                        <div class="specs-title">Key Features</div>
+                        <ul class="specs-list features-list">
+                            <li><i class="fa-solid fa-circle-check"></i> PP, PES & PTFE media options</li>
+                            <li><i class="fa-solid fa-circle-check"></i> High flow performance</li>
+                            <li><i class="fa-solid fa-circle-check"></i> Wide chemical compatibility</li>
+                        </ul>
+                    </div>
+                    <div class="specs-container">
+                        <div class="specs-title">Operational Benefits</div>
+                        <ul class="specs-list benefits-list">
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Superior filtration efficiency</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Lower operating costs</li>
+                            <li><i class="fa-solid fa-circle-arrow-right"></i> Easy installation & replacement</li>
+                        </ul>
+                    </div>
+                    <button class="btn-enquire" onclick="enquireProduct('Filter Cartridges')">Enquire Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="final-horizontal-carousel-section">
+        <div class="carousel-main-header-block">
+            <h2>Explore More Products</h2>
+            <p>Browse our extended range of high-efficiency industrial filtration systems.</p>
+        </div>
+
+        <div class="carousel-horizontal-outer-viewport" id="hybridViewport">
+            <div class="carousel-horizontal-flex-track" id="hybridScrollTrack">
+                
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-604374c8-fa8e-4e06-ad86-b222e2d7c96d.gif" alt="Pleated Cartridges">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>PP SPUN</h3>
+                        <p>A PP spun filter is a cylinder-shaped water filter made of melted polypropylene. It works as a first-stage pre-filter to catch dirt, sand, rust, and dust. It protects later filters and keeps your water clean.</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Pleated Filter Cartridges')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <span class="carousel-red-tag">Top Seller</span>
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-a11b72c0-11e9-49fb-b116-8d30b49e5410.jpg" alt="Liquid Vessels">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Filter Cartridge Resins</h3>
+                        <p>resin-bonded structural cartridges used for heavy-duty industrial filtration or ion-exchange/adsorbent resin media used for chemical and water purification.</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Liquid Filter Vessels')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">                
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-0687ecba-8105-40d9-aea5-67261129f166.webp" alt="Anode Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Wound Filter Cartridge</h3>
+                        <p>A depth-type sediment filter made by tightly winding yarn or thread in a honeycomb pattern around a central perforated core. </p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Electroplating Anode Bags')">Enquire Now</button>
+                    </div>
+                </div>
+                
+                 <div class="carousel-individual-card-box">
+                    <span class="carousel-red-tag">FDA Approved</span>
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-1b8d60fe-886c-43bb-a5be-9c4e9ca18f1f.jpg" alt="Anode Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>PES Filter Cartridges</h3>
+                        <p>combine a high-precision hydrophilic membrane with a protective outer shell, delivering sterile liquid filtration with high flow rates, low protein binding, and broad chemical compatibility</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Electroplating Anode Bags')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <span class="carousel-red-tag">Custom Media</span>
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-a7322a3c-5701-45a4-ae4d-2c9dfd59cca6.jpg" alt="Filter Paper Roll">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Airslide Fabric</h3>
+                        <p>a specialized, highly permeable technical textile used in pneumatic conveyor systems featuring polyester, nylon, or cotton compositions designed to fluidize and transport dry bulk powders smoothly via gravity</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Industrial Filter Rolls')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <span class="carousel-red-tag">Premium Mesh</span>
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-12-89d19aff-1dd8-49d2-9110-46cc511c6430.jpg" alt="Dust Collector Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>High Temperature Filter Bags</h3>
+                        <p>Durable high-temperature filter bags engineered for reliable dust collection in cement, steel, power, and industrial plants.</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Dust Collector Bags')">Enquire Now</button>
+                    </div>
+                </div>
+
+                  <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-7b20eedf-2f40-4213-abf6-e45e4b4dacc7.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Activated Carbon Pad</h3>
+                        <p>Activated carbon filter sheets and charcoal pads work as vigilant guardians, capturing impurities that cloud air and water</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+                
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-264482ff-9960-4046-942c-fc57f64fb5b9.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Sparkler Cloth</h3>
+                        <p>A sparkler filter cloth is a specialized circular or disc-shaped industrial filter media used in horizontal plate pressure sparkler filters to separate fine solids from liquids</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-f5f82bd2-fb87-48d7-9e19-10ca89c86963.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Depth Filter Sheet </h3>
+                        <p>Key features include cellulose fibers, mineral filter aids, and a positive zeta potential charge</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-34343b6f-a02a-43fb-9b26-aac6e63bcf1d.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Liquid Filter Bags </h3>
+                        <p>Key features include high flow rates, fine micron accuracy, and simple replacement when dirty</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/member/2026-07-24-d636b60a-1a09-4c83-b30e-08ed59140bf1.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Filter Cages </h3>
+                        <p>a metal wire support structure used inside fabric filter bags to maintain shape, prevent collapse, and improve dust cleaning efficiency in industrial baghouse systems</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+
+                <div class="carousel-individual-card-box">
+                    <div class="carousel-image-container-fixed">
+                        <img src="https://cdn.phototourl.com/free/2026-07-24-fd5d226f-78c8-4463-a290-d0a22cbb87a9.jpg" alt="Fluid Bed Bags">
+                    </div>
+                    <div class="carousel-content-area-fixed">
+                        <h3>Silo Filter</h3>
+                        <p>an air-cleaning device mounted on top of bulk storage tanks, using baghouse or pleated cartridge elements to trap dust and return powder materials back into the silo during pneumatic filling</p>
+                        <button class="carousel-action-btn-pill" onclick="enquireProduct('Fluid Bed Dryer Bags (FBD)')">Enquire Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <style>
+    .final-horizontal-carousel-section {
+        padding: 60px 4% !important;
+        background-color: #F8FAFC !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        overflow: hidden !important;
+        clear: both !important;
+    }
+
+    .carousel-main-header-block {
+        margin-bottom: 25px !important;
+    }
+
+    .carousel-main-header-block h2 {
+        font-size: 26px !important;
+        color: #0A2342 !important;
+        font-weight: 700 !important;
+        margin: 0 0 6px 0 !important;
+    }
+
+    .carousel-main-header-block p {
+        color: #64748B !important;
+        font-size: 14px !important;
+        margin: 0 !important;
+    }
+
+    /* CHANGED: Enabled scroller bar so users can manually scroll or drag comfortably */
+    .carousel-horizontal-outer-viewport {
+        width: 100% !important;
+        overflow-x: auto !important; /* Enable native horizontal scrollbar */
+        overflow-y: hidden !important;
+        display: block !important;
+        padding-bottom: 15px !important;
+        touch-action: pan-x !important; 
+        -webkit-overflow-scrolling: touch !important; 
+    }
+
+    /* Custom Styling for the visible Scrollbar */
+    .carousel-horizontal-outer-viewport::-webkit-scrollbar {
+        height: 6px !important;
+        display: block !important;
+    }
+    
+    .carousel-horizontal-outer-viewport::-webkit-scrollbar-track {
+        background: #E2E8F0 !important;
+        border-radius: 10px !important;
+    }
+    
+    .carousel-horizontal-outer-viewport::-webkit-scrollbar-thumb {
+        background: var(--navy) !important;
+        border-radius: 10px !important;
+    }
+
+    .carousel-horizontal-outer-viewport::-webkit-scrollbar-thumb:hover {
+        background: var(--gold) !important;
+    }
+
+    .carousel-horizontal-flex-track {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 24px !important;
+        padding: 10px 5px !important;
+        background: transparent !important;
+        width: max-content !important; 
+        cursor: grab;
+        user-select: none;
+    }
+
+    .carousel-horizontal-flex-track:active {
+        cursor: grabbing;
+    }
+
+    /* Rigid Grid Box Architectures */
+    .carousel-individual-card-box {
+        flex: 0 0 300px !important;
+        width: 300px !important;
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        border: 1.5px solid #E2E8F0 !important;
+        overflow: hidden !important;
+        position: relative !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        box-sizing: border-box !important;
+    }
+
+    .carousel-image-container-fixed {
+        width: 100% !important;
+        height: 190px !important;
+        overflow: hidden !important;
+        background-color: #ffffff !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+    }
+
+    .carousel-image-container-fixed img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        padding: 12px !important;
+    }
+
+    .carousel-red-tag {
+        position: absolute !important;
+        top: 12px !important;
+        left: 12px !important;
+        background-color: #FFECEB !important;
+        color: #FF4E3E !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        padding: 4px 10px !important;
+        border-radius: 8px !important;
+        z-index: 5 !important;
+    }
+
+    .carousel-content-area-fixed {
+        padding: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .carousel-content-area-fixed h3 {
+        font-size: 17px !important;
+        color: #0A2342 !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+    }
+
+    .carousel-content-area-fixed p {
+        font-size: 13px !important;
+        color: #64748B !important;
+        line-height: 1.4 !important;
+        margin: 0 !important;
+        height: 38px !important;
+        overflow: hidden !important;
+    }
+
+    .carousel-action-btn-pill {
+        width: 100% !important;
+        padding: 11px !important;
+        background: #ffffff !important;
+        border: 1.5px solid #0A2342 !important;
+        color: #0A2342 !important;
+        border-radius: 25px !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        cursor: pointer !important;
+        margin-top: 8px !important;
+        transition: all 0.2s ease;
+    }
+
+    .carousel-action-btn-pill:hover {
+        background: #0A2342 !important;
+        color: #ffffff !important;
+    }
+
+    /* Mobile Screen Tuning overrides to avoid squeeze collapses */
+    @media (max-width: 768px) {
+        .carousel-individual-card-box {
+            flex: 0 0 260px !important;
+            width: 260px !important;
+        }
+    }
+    </style>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const viewport = document.getElementById('hybridViewport');
+        const track = document.getElementById('hybridScrollTrack');
+        if (!viewport || !track) return;
+
+        // Detect if device supports touch events native architecture
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+        if (!isTouchDevice) {
+            // --- DESKTOP LOGIC CODE BRAND (AUTO LOOPING DRAG ACTIVE) ---
+            const originalCards = Array.from(track.children);
+            originalCards.forEach(card => {
+                const clone = card.cloneNode(true);
+                track.appendChild(clone);
+            });
+
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let autoSpeed = 0.6; 
+            let currentScroll = 0;
+            let animationFrame;
+
+            function runMarquee() {
+                if (!isDown) {
+                    currentScroll += autoSpeed;
+                    const splitLimit = track.scrollWidth / 2;
+                    if (currentScroll >= splitLimit) {
+                        currentScroll = 0;
+                    }
+                    viewport.scrollLeft = currentScroll;
+                }
+                animationFrame = requestAnimationFrame(runMarquee);
+            }
+            animationFrame = requestAnimationFrame(runMarquee);
+
+            viewport.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - viewport.offsetLeft;
+                scrollLeft = viewport.scrollLeft;
+                cancelAnimationFrame(animationFrame);
+            });
+
+            viewport.addEventListener('mouseleave', () => {
+                if (isDown) {
+                    isDown = false;
+                    currentScroll = viewport.scrollLeft;
+                    animationFrame = requestAnimationFrame(runMarquee);
+                }
+            });
+
+            viewport.addEventListener('mouseup', () => {
+                if (isDown) {
+                    isDown = false;
+                    currentScroll = viewport.scrollLeft;
+                    animationFrame = requestAnimationFrame(runMarquee);
+                }
+            });
+
+            viewport.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - viewport.offsetLeft;
+                const walk = (x - startX) * 1.8;
+                viewport.scrollLeft = scrollLeft - walk;
+            });
+        } else {
+            // --- MOBILE/TOUCH DEVICE MODE ---
+            console.log("Hybrid Mode: Mobile Touch Swiping Layer Initialized Successfully.");
+        }
+    });
+    </script>
+
+    <section class="quote-section" id="rfq-form-section">
+        <div class="quote-card">
+            <h2>Let's Build the Right Filtration Solution</h2>
+            <p>Provide your project specifications and filtration requirements. Our engineering team will review your application and deliver a customized technical quotation within 24 business hours.</p>
+            
+            <form id="inquiryForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="businessEmail">Business Email *</label>
+                        <input type="email" id="businessEmail" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="companyName">Company Name *</label>
+                        <input type="text" id="companyName" placeholder="Enterprise Ltd." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Product Category *</label>
+                        <select id="productCategory" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="filter-cloth">Filter Cloth & Media</option>
+                            <option value="dust-bags">Dust Collector Bags</option>
+                            <option value="centrifuge-bags">Centrifuge Filter Bags</option>
+                            <option value="fbd-bags">Fluid Bed Dryer Bags (FBD)</option>
+                            <option value="sparkler-pads">Sparkler Filter Pads</option>
+                            <option value="cartridges">Filter Cartridges</option>
+                            <option value="more products">More products</option>
+                        </select>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label for="specifications">Technical Specifications / Custom Sizing Requirements</label>
+                        <textarea id="specifications" rows="4" placeholder="Enter sizing dimensions, material preferences, chemical environment details, or operating temperature baselines..."></textarea>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">
+                    Submit Engineering Inquiry <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                </button>
+            </form>
+            <div id="formSuccess" style="display:none; color: #10B981; text-align: center; margin-top: 20px; font-weight: 600;">
+                Thank you! Your inquiry has been submitted successfully.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <div class="logo-text" style="font-size: 22px; display: flex; align-items: center; gap: 10px;">
+                    <img src="https://cdn.phototourl.com/free/2026-07-11-60f419d5-4370-47bc-a34a-a815fa53dee5.png" alt="Sona Impex Logo Icon" style="height: 35px; width: auto; object-fit: contain;">
+                    <span style="color: #ffffff;">Sona <span style="color: var(--gold);">Impex</span></span>
+                </div>
+                <p style="margin-top: 15px; line-height: 1.6;">Sona Impex is a trusted manufacturer and supplier of premium industrial filtration products including Filter Bags, Filter Cloth, Filter Cartridges and customized filtration solutions for pharmaceutical, chemical, food processing and manufacturing industries. We are committed to delivering quality, reliability and long-term performance.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="products.html">Filter Products</a></li>
+                    <li><a href="industries.html">Industries Served</a></li>
+                    <li><a href="contact.html">Contact Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Information</h4>
+                <ul class="footer-contact">
+                    <li>
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span>A-1/102, Kavi Nagar Industrial Area, Ghaziabad, Uttar Pradesh, India, 201002</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>sonaimpex1265@gmail.com
+                         <br>info@sonaimpex.com</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-phone"></i>
+                        <span>+91-9810603211, +91-9711095518</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; Designed by jaiwantdeepanshu04@gmail.com 2026 Sona Impex. All Rights Reserved. 
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        (function() {
+            const hero = document.querySelector('.products-hero') || document.querySelector('.about-hero') || document.querySelector('.page-hero');
+            if (hero) {
+                hero.style.position = 'relative';
+                hero.style.overflow = 'hidden';
+                
+                const canvasDiv = document.createElement('div');
+                canvasDiv.style.position = 'absolute';
+                canvasDiv.style.top = '0';
+                canvasDiv.style.left = '0';
+                canvasDiv.style.width = '100%';
+                canvasDiv.style.height = '100%';
+                canvasDiv.style.zIndex = '1';
+                canvasDiv.style.pointerEvents = 'none';
+                hero.insertBefore(canvasDiv, hero.firstChild);
+
+                Array.from(hero.children).forEach(child => {
+                    if (child !== canvasDiv) {
+                        child.style.position = 'relative';
+                        child.style.zIndex = '2';
+                    }
+                });
+
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(60, hero.clientWidth / hero.clientHeight, 0.1, 1000);
+                camera.position.z = 50;
+
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                renderer.setSize(hero.clientWidth, hero.clientHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                canvasDiv.appendChild(renderer.domElement);
+
+                const isMobile = window.innerWidth < 768;
+                const count = isMobile ? 45 : 90;
+                const geometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(count * 3);
+
+                for (let i = 0; i < count * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 100;
+                }
+                geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+                const material = new THREE.PointsMaterial({
+                    size: isMobile ? 1.2 : 0.8,
+                    color: 0xD4A017,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending
+                });
+
+                const plexusPoints = new THREE.Points(geometry, material);
+                scene.add(plexusPoints);
+
+                function animate() {
+                    requestAnimationFrame(animate);
+                    plexusPoints.rotation.x += 0.0005;
+                    plexusPoints.rotation.y += 0.0005;
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = hero.clientWidth / hero.clientHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(hero.clientWidth, hero.clientHeight);
+                });
+            }
+        })();
+    </script>
+
+    <script>
+    // 1. MOBILE MENU TOGGLE SYSTEM
+    const menuToggle = document.querySelector('.mobile-nav-toggle');
+    const navMenu = document.querySelector('nav');
+    if(menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = menuToggle.querySelector('i');
+            icon.className = navMenu.classList.contains('active') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+        });
+        
+        // Close menu on link click
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                menuToggle.querySelector('i').className = 'fa-solid fa-bars';
+            });
+        });
+    }
+
+    // CHANGED: 3D interactive tilt rotate script completely removed to prevent shaking on cursor/hover.
+
+    // 2. ENQUIRE BUTTON ROUTING ACTION
+    function enquireProduct(productName) {
+        const dropdown = document.getElementById('productCategory');
+        if(dropdown) {
+            dropdown.value = productName;
+            const section = document.getElementById('rfq-form-section');
+            if(section) section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // 3. FORM SUBMISSION HANDLER
+    const inquiryForm = document.getElementById('inquiryForm');
+    if(inquiryForm) {
+        inquiryForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const successMsg = document.getElementById('formSuccess');
+            if(successMsg) {
+                successMsg.style.display = "block";
+                successMsg.innerText = "Thank you! Your inquiry has been submitted successfully.";
+                setTimeout(() => { successMsg.style.display = "none"; }, 5000);
+            }
+            this.reset();
+        });
+    }
+    </script>
+    <a href="contact.html" class="floating-quote-btn">
+        <i class="fa-solid fa-file-invoice"></i> Request a Quote
+    </a>
+</body>
+</html>
+
